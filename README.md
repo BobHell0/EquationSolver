@@ -10,3 +10,6 @@ In the same year, I also did a course on Object Oriented programming in Java and
 - Parse a mathematical equation with the above operations
 - Solve a linear equation with one variable
 - Show that given one equation is true, another equation is either true or false
+
+### Extension
+My eventual vision for this software is that I am able to add **lemmas**. In Dafny, lemmas could be used to 'teach' Dafny at runtime about certain mathematical properties (e.g. the square of an even number is even) which could then be used to prove more complex lemmas (e.g. the sum of two even numbers squared is even). If I could have a way to implement lemmas in this system, so that users could teach my system at runtime, that would be a great stretch goal to achieve.
