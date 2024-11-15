@@ -33,11 +33,6 @@ public class experimentingWithRegex {
     public static String parseExpression(experimentingWithRegex e, Map<String, Expression> table) {
         e.line = e.line.replaceAll("\s", "");
         System.out.println(e.line);
-        
-        Pattern numberPattern = Pattern.compile("^[0-9]+", Pattern.CASE_INSENSITIVE);
-        Pattern pronumeralPattern = Pattern.compile("[A-Z][a-z]");
-
-        Pattern operationPattern = Pattern.compile("[-+/*]", Pattern.CASE_INSENSITIVE);
 
         // crazy stuff – {3} would be an entry in the hash table that would 
         Pattern divAndMultPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:[0-9]+(?:\\.[0-9]*)?))([*/])((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:[0-9]+(?:\\.[0-9]*)?))");
