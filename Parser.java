@@ -31,13 +31,14 @@ public class Parser {
     }
 
     public static String parseExpression(Parser e, Map<String, Expression> table) {
-        e.line = e.line.replaceAll("\s", "");
+        System.out.println(e.line);
+
         System.out.println(e.line);
 
         // crazy stuff – {3} would be an entry in the hash table that would 
-        Pattern divAndMultPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:[0-9]+(?:\\.[0-9]*)?))([*/])((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:[0-9]+(?:\\.[0-9]*)?))");
+        Pattern divAndMultPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))([*/])((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))");
 
-        Pattern addAndSubPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:[0-9]+(?:\\.[0-9]*)?))([-+])((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:[0-9]+(?:\\.[0-9]*)?))");
+        Pattern addAndSubPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))(\\+|\\+-)((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))");
         
 
         // recursively handling bracketed expressions
@@ -151,9 +152,14 @@ public class Parser {
         // }
     }
     public static void main(String[] args) {
-        String expression = new String("123 - 321/4.2 * (3 + 2) / 4");
+        String expression = new String("190");
+        // String expression = new String("123 - 4 * 3");
+        
         Map<String, Expression> table = new HashMap<>();
         Parser e = new Parser(expression);
+
+        e.line = e.line.replaceAll("\s", "");
+        e.line = e.line.replaceAll("-", "+-");
         
         parseExpression(e, table);
         System.out.println();

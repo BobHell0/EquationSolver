@@ -15,7 +15,9 @@ public class Division implements Expression {
 
     @Override
     public Expression evaluate() {
-        if (left.simplify().matches("^[0-9]+(\\.[0-9]*)?$") && right.simplify().matches("^[0-9]+(\\.[0-9]*)?$")) {
+        System.out.println(left.simplify());
+        System.out.println(right.simplify());
+        if (left.simplify().matches("^-?[0-9]+(\\.[0-9]*)?$") && right.simplify().matches("^-?[0-9]+(\\.[0-9]*)?$")) {
             String val = Double.toString(Double.parseDouble(left.simplify()) / Double.parseDouble(right.simplify()));
             return new SimpleExpression(val);
         } else {
@@ -25,6 +27,6 @@ public class Division implements Expression {
 
     @Override
     public String stringify() {
-        return "(" + left.stringify() + "/" + right.stringify() + ")";
+        return left.stringify() + "/" + right.stringify();
     }
 }

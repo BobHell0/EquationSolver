@@ -16,10 +16,10 @@ public class Subtraction implements Expression {
 
     @Override
     public Expression evaluate() {
-        if (left.simplify().matches("^[0-9]+$") && right.simplify().matches("^[0-9]+$")) {
+        if (left.simplify().matches("^-?[0-9]+$") && right.simplify().matches("^-?[0-9]+$")) {
             String val = Integer.toString(Integer.parseInt(left.simplify()) - Integer.parseInt(right.simplify()));
             return new SimpleExpression(val);
-        } else if (left.simplify().matches("^[0-9]+(\\.[0-9]*)?$") && right.simplify().matches("^[0-9]+(\\.[0-9]*)?$")) {
+        } else if (left.simplify().matches("^-?[0-9]+(\\.[0-9]*)?$") && right.simplify().matches("^-?[0-9]+(\\.[0-9]*)?$")) {
             String val = Double.toString(Double.parseDouble(left.simplify()) - Double.parseDouble(right.simplify()));
             return new SimpleExpression(val);
         } else {
