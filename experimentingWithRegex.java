@@ -33,7 +33,7 @@ public class experimentingWithRegex {
         // crazy stuff – {3} would be an entry in the hash table that would 
         Pattern divAndMultPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:[0-9]+(?:\\.[0-9]*)?))([*/])((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:[0-9]+(?:\\.[0-9]*)?))");
 
-        Pattern addAndSubPattern = Pattern.compile("([-+])");
+        Pattern addAndSubPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:[0-9]+(?:\\.[0-9]*)?))([-+])((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:[0-9]+(?:\\.[0-9]*)?))");
         
 
         // recursively handling bracketed expressions
@@ -95,6 +95,44 @@ public class experimentingWithRegex {
             multAndDivs = divAndMultPattern.matcher(line);
         }
 
+
+        Matcher addsAndSubs = addAndSubPattern.matcher(line);
+
+
+        while (addsAndSubs.find()) {
+            System.out.println(addsAndSubs.group(0));
+            System.out.println(addsAndSubs.group(1));
+            System.out.println(addsAndSubs.group(2));
+            System.out.println(addsAndSubs.group(3));
+
+            int matchLength = addsAndSubs.group(0).length();
+            int start = line.indexOf(addsAndSubs.group(0));
+            int end = start + matchLength;
+
+            Expression leftExpression;
+            if (addsAndSubs.group(1).startsWith("\\")) {
+                leftExpression = table.get(addsAndSubs.group(1));
+            } else {
+                leftExpression = new SimpleExpression(addsAndSubs.group(1));
+                // leftExpression = createExpression(multAndDivs.group(1));
+            }
+
+            Expression rightExpression;
+            if (addsAndSubs.group(3).startsWith("\\")) {
+                rightExpression = table.get(addsAndSubs.group(3));
+            } else {
+                rightExpression = new SimpleExpression(addsAndSubs.group(3));
+            }
+            Expression finalExpression = CompoundExpressionFactory.expressionFromOperation(addsAndSubs.group(2), leftExpression, rightExpression);
+
+            String expIdentifier = "\\" + table.size();
+
+            table.put(expIdentifier, finalExpression);
+            line = line.substring(0, start) + expIdentifier + line.substring(end);
+
+            multAndDivs = divAndMultPattern.matcher(line);
+        }
+
         System.out.println(line);
 
         // Matcher addAndSubs = addAndSubPattern.matcher(line);
@@ -106,7 +144,7 @@ public class experimentingWithRegex {
         // }
     }
     public static void main(String[] args) {
-        String expression = new String("3/4 * 2 + 3 * 4.");
+        String expression = new String("3/4 * (2 + 3) * 4.");
         Map<String, Expression> table = new HashMap<>();
         parseExpression(expression, table);
         System.out.println();
