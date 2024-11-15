@@ -10,6 +10,15 @@ import java.util.Map;
 
 public class experimentingWithRegex {
 
+    private String line;
+
+    public experimentingWithRegex(String line) {
+        this.line = line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
+    }
 
     // Note this method should not be here, it should be in the expression stuff
     public static String createExpression(String s) {
@@ -21,9 +30,9 @@ public class experimentingWithRegex {
         return left+op+right;
     }
 
-    public static void parseExpression(String line, Map<String, Expression> table) {
-        line = line.replaceAll("\s", "");
-        System.out.println(line);
+    public static String parseExpression(experimentingWithRegex e, Map<String, Expression> table) {
+        e.line = e.line.replaceAll("\s", "");
+        System.out.println(e.line);
         
         Pattern numberPattern = Pattern.compile("^[0-9]+", Pattern.CASE_INSENSITIVE);
         Pattern pronumeralPattern = Pattern.compile("[A-Z][a-z]");
@@ -37,27 +46,28 @@ public class experimentingWithRegex {
         
 
         // recursively handling bracketed expressions
-        for(int i = 0; i < line.length(); i++) {
-            if (line.charAt(i) != '(') continue;
+        for(int i = 0; i < e.line.length(); i++) {
+            if (e.line.charAt(i) != '(') continue;
             else {
                 int bracketStack = 1;
                 int j = i;
-                while (bracketStack > 0 && j < line.length()) {
+                while (bracketStack > 0 && j < e.line.length()) {
                     j++;
-                    if (line.charAt(j) == '(') {
+                    if (e.line.charAt(j) == '(') {
                         bracketStack++;
-                    } else if (line.charAt(j) == ')') {
+                    } else if (e.line.charAt(j) == ')') {
                         bracketStack--;
                     }
                     
                 }
-                parseExpression(line.substring(i + 1, j), table);
+                String parsedBracket = parseExpression(new experimentingWithRegex(e.line.substring(i + 1, j)), table);
+                e.line = e.line.substring(0, i) + parsedBracket + e.line.substring(j + 1);
             }
         }
 
-        System.out.println("About to look for operations in " + line);
+        System.out.println("About to look for operations in " + e.line);
 
-        Matcher multAndDivs = divAndMultPattern.matcher(line);
+        Matcher multAndDivs = divAndMultPattern.matcher(e.line);
 
 
         while (multAndDivs.find()) {
@@ -68,7 +78,7 @@ public class experimentingWithRegex {
             System.out.println(multAndDivs.group(3));
 
             int matchLength = multAndDivs.group(0).length();
-            int start = line.indexOf(multAndDivs.group(0));
+            int start = e.line.indexOf(multAndDivs.group(0));
             int end = start + matchLength;
 
             Expression leftExpression;
@@ -90,13 +100,13 @@ public class experimentingWithRegex {
             String expIdentifier = "\\" + table.size();
 
             table.put(expIdentifier, finalExpression);
-            line = line.substring(0, start) + expIdentifier + line.substring(end);
+            e.line = e.line.substring(0, start) + expIdentifier + e.line.substring(end);
 
-            multAndDivs = divAndMultPattern.matcher(line);
+            multAndDivs = divAndMultPattern.matcher(e.line);
         }
 
 
-        Matcher addsAndSubs = addAndSubPattern.matcher(line);
+        Matcher addsAndSubs = addAndSubPattern.matcher(e.line);
 
 
         while (addsAndSubs.find()) {
@@ -106,7 +116,7 @@ public class experimentingWithRegex {
             System.out.println(addsAndSubs.group(3));
 
             int matchLength = addsAndSubs.group(0).length();
-            int start = line.indexOf(addsAndSubs.group(0));
+            int start = e.line.indexOf(addsAndSubs.group(0));
             int end = start + matchLength;
 
             Expression leftExpression;
@@ -128,12 +138,13 @@ public class experimentingWithRegex {
             String expIdentifier = "\\" + table.size();
 
             table.put(expIdentifier, finalExpression);
-            line = line.substring(0, start) + expIdentifier + line.substring(end);
+            e.line = e.line.substring(0, start) + expIdentifier + e.line.substring(end);
 
-            multAndDivs = divAndMultPattern.matcher(line);
+            multAndDivs = divAndMultPattern.matcher(e.line);
         }
 
-        System.out.println(line);
+        System.out.println(e.line);
+        return e.line;
 
         // Matcher addAndSubs = addAndSubPattern.matcher(line);
         // if (addAndSubs.find()) {
@@ -144,9 +155,11 @@ public class experimentingWithRegex {
         // }
     }
     public static void main(String[] args) {
-        String expression = new String("3/4 * (2 + 3) * 4.");
+        String expression = new String("123 - 321/4.2 * (3 + 2) / 4");
         Map<String, Expression> table = new HashMap<>();
-        parseExpression(expression, table);
+        experimentingWithRegex e = new experimentingWithRegex(expression);
+        
+        parseExpression(e, table);
         System.out.println();
         System.out.println(table.size());
 
@@ -158,5 +171,5 @@ public class experimentingWithRegex {
         }
         
     }
-    
+
 }
