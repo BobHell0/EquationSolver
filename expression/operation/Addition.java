@@ -29,7 +29,7 @@ public class Addition implements Expression {
 
     @Override
     public String stringify() {
-        return left.stringify() + "+" + right.stringify();
+        return "(" + left.stringify() + "+" + right.stringify() + ")";
     }
     
     
