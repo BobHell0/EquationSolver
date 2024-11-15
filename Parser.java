@@ -8,11 +8,11 @@ import expression.SimpleExpression;
 import java.util.HashMap;
 import java.util.Map;
 
-public class experimentingWithRegex {
+public class Parser {
 
     private String line;
 
-    public experimentingWithRegex(String line) {
+    public Parser(String line) {
         this.line = line;
     }
 
@@ -30,7 +30,7 @@ public class experimentingWithRegex {
         return left+op+right;
     }
 
-    public static String parseExpression(experimentingWithRegex e, Map<String, Expression> table) {
+    public static String parseExpression(Parser e, Map<String, Expression> table) {
         e.line = e.line.replaceAll("\s", "");
         System.out.println(e.line);
 
@@ -55,7 +55,7 @@ public class experimentingWithRegex {
                     }
                     
                 }
-                String parsedBracket = parseExpression(new experimentingWithRegex(e.line.substring(i + 1, j)), table);
+                String parsedBracket = parseExpression(new Parser(e.line.substring(i + 1, j)), table);
                 e.line = e.line.substring(0, i) + parsedBracket + e.line.substring(j + 1);
             }
         }
@@ -64,7 +64,7 @@ public class experimentingWithRegex {
 
         Matcher multAndDivs = divAndMultPattern.matcher(e.line);
 
-
+        // TODO: (1) make this while loop into a private method
         while (multAndDivs.find()) {
 
             System.out.println(multAndDivs.group(0));
@@ -103,6 +103,7 @@ public class experimentingWithRegex {
 
         Matcher addsAndSubs = addAndSubPattern.matcher(e.line);
 
+        // TODO: make this while loop into a separate private method (See 1)
 
         while (addsAndSubs.find()) {
             System.out.println(addsAndSubs.group(0));
@@ -152,7 +153,7 @@ public class experimentingWithRegex {
     public static void main(String[] args) {
         String expression = new String("123 - 321/4.2 * (3 + 2) / 4");
         Map<String, Expression> table = new HashMap<>();
-        experimentingWithRegex e = new experimentingWithRegex(expression);
+        Parser e = new Parser(expression);
         
         parseExpression(e, table);
         System.out.println();
