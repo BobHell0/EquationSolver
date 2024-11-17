@@ -37,6 +37,8 @@ public class Parser {
         System.out.println(e.line);
 
 
+        Pattern negativeOutFrontPattern = Pattern.compile("^-(\\\\[0-9]+|[A-Za-z]|[0-9]+(?:\\.[0-9]*)?)");
+
         // notice that the left number of the * or / will not be negative
         Pattern divAndMultPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:[0-9]+(?:\\.[0-9]*)?))([*/])((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))");
 
@@ -65,10 +67,32 @@ public class Parser {
 
         System.out.println("About to look for operations in " + e.line);
 
+        // if a negative sign is out the front, this needs to be handled as a single number
+        Matcher m = negativeOutFrontPattern.matcher(e.line);
+        if (m.find()) {
+
+            int matchLength = m.group(0).length();
+            int start = e.line.indexOf(m.group(0));
+            int end = start + matchLength;
+
+            Expression expressionToRight;
+            if (m.group(1).startsWith("\\")) {
+                expressionToRight = table.get(m.group(1));
+            } else {
+                expressionToRight = new SimpleExpression(m.group(1));
+            }
+            Expression finalExpression = CompoundExpressionFactory.negativifyExpression(expressionToRight);
+
+            String expIdentifier = "\\" + table.size();
+
+            table.put(expIdentifier, finalExpression);
+            e.line = e.line.substring(0, start) + expIdentifier + e.line.substring(end);
+        }
+
         findOperations(divAndMultPattern, e, table);
         findOperations(addAndSubPattern, e, table);
 
-        Matcher m = negativeNumberPattern.matcher(e.line);
+        m = negativeNumberPattern.matcher(e.line);
         if (m.find()) {
             Expression expressionToRight;
             if (m.group(1).startsWith("\\")) {
@@ -137,27 +161,8 @@ public class Parser {
 
     }
     public static void main(String[] args) {
-        // TEST CASES:
-
-        // String expression = new String("3 + 4");
-        // String expression = new String("123 - 4 * 3");
-        // String expression = new String("123 - 4 + 3");
-        // String expression = new String("-4 * 3");
-
-        // String expression = new String("3 + (4 * 3)");
-        // String expression = new String("3 + (4 - 3) / (5 / (4 - 3))");
-        // String expression = new String("(123 + (-11/3)) * 2/(4-3) + 6");
-
-        // String expression = new String("5 - -3");
-        // String expression = new String("5 - (-3)");
-        // String expression = new String("5 + -3");
-        // String expression = new String("5 + (-3)");
         String expression = new String("-5 * -3");
 
-
-
-        
-        
         Map<String, Expression> table = new HashMap<>();
         Parser e = new Parser(expression);
 
