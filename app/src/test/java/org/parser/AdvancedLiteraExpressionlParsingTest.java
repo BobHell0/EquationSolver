@@ -15,12 +15,12 @@ public class AdvancedLiteraExpressionlParsingTest {
     @Test
     @DisplayName("Multiplication and Division")
     public void MultiplciationAndDivision() {
-        assertEquals(85.3333333333, 
+        assertEquals(85.333, 
             Math.round(
                 Double.parseDouble(
                     Parser.parseLine("4 * 2 / 3 * 8/3 * 4 * 3")
-                )
-            ), 10);
+                ) * 1000
+            ) / 1000.0);
     }
 
     @Test
@@ -33,6 +33,42 @@ public class AdvancedLiteraExpressionlParsingTest {
     @DisplayName("Subtraction and Multiplication") 
     public void SubtractionAndMultiplcation() {
         assertEquals(-20, Integer.parseInt(Parser.parseLine("-4 * -3 - 2 * 2 - 12 * 2 - 4")));
+    }
+
+    @Test
+    @DisplayName("Subtraction and Division")
+    public void SubtractionAndDivision() {
+        assertEquals(-27.5167, 
+            Math.round(
+                Double.parseDouble(
+                    Parser.parseLine("-4 / 15 - 3 / 4 - 6 - 3/6 - 12 - 8")
+                ) * 10000
+            ) / 10000.0
+        );
+    }
+
+    @Test
+    @DisplayName("Addition and Division")
+    public void AdditionAndDivision() {
+        assertEquals(14.833, 
+            Math.round(
+                Double.parseDouble(
+                    Parser.parseLine("3 / 2 + 1 / 2 + 4 + 3 + 4 / 3 + 9 / 2")
+                ) * 1000 ) / 1000.0);
+    }
+
+    @Test
+    @DisplayName("Randomised Calculations")
+    public void RandomisedCalculations() {
+        assertEquals(0.25, Double.parseDouble(Parser.parseLine("3 / 2 / 3 / 2")));
+        assertEquals(-12.5, Double.parseDouble(Parser.parseLine("4 * (-3) + 2 - 3/2*2 + 1- 6/3 + (3 + (3 - 3)) / 2")));
+        assertEquals(-9.107, Math.round(
+            Double.parseDouble(
+                Parser.parseLine("-3/-2 * (-2 + 3/7 + 6/4) - 6 * 3/2")) 
+            * 1000) 
+        / 1000.0);
+
+        assertEquals(-2, Integer.parseInt(Parser.parseLine("3 + (-4/-2) * 1 - (6 - 3) + 3 * 2 - 7 + 3 * (3-4)")));
     }
 
     @Test
