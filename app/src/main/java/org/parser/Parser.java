@@ -1,10 +1,10 @@
-package app.src.main.java.parser;
+package app.src.main.java.org.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import app.src.main.java.expression.CompoundExpressionFactory;
-import app.src.main.java.expression.Expression;
-import app.src.main.java.expression.SimpleExpression;
+import app.src.main.java.org.expression.CompoundExpressionFactory;
+import app.src.main.java.org.expression.Expression;
+import app.src.main.java.org.expression.SimpleExpression;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -130,7 +130,10 @@ public class Parser {
         // remove all white space – makes the regex-ing easier
         e.line = e.line.replaceAll("\s", "");
         
-        return parseExpressionComputation(e, table);
+        String finalEncoding = parseExpressionComputation(e, table);
+
+        // String finalEncoding = "\\" + (table.size() - 1);
+        return table.get(finalEncoding).simplify();
 
     }
     public static void main(String[] args) {

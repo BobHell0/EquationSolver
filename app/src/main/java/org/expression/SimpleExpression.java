@@ -1,4 +1,4 @@
-package app.src.main.java.expression;
+package app.src.main.java.org.expression;
 
 public class SimpleExpression implements Expression {
 

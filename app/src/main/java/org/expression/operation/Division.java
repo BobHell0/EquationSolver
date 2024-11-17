@@ -1,7 +1,7 @@
-package app.src.main.java.expression.operation;
+package app.src.main.java.org.expression.operation;
 
-import app.src.main.java.expression.Expression;
-import app.src.main.java.expression.SimpleExpression;
+import app.src.main.java.org.expression.Expression;
+import app.src.main.java.org.expression.SimpleExpression;
 
 public class Division implements Expression {
 
