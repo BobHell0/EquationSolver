@@ -1,7 +1,7 @@
-package expression.operation;
+package app.src.main.java.expression.operation;
 
-import expression.Expression;
-import expression.SimpleExpression;
+import app.src.main.java.expression.Expression;
+import app.src.main.java.expression.SimpleExpression;
 
 public class Subtraction implements Expression {
 
