@@ -56,4 +56,16 @@ public class BasicParsingTest {
         assertEquals(10, Integer.parseInt(Parser.parseLine("-13 - -23")));
     }
 
+    @Test
+    @DisplayName("Brackets Around Addition")
+    public void BracketsAroundAddition() {
+        assertEquals(16, Integer.parseInt(Parser.parseLine("4 * (3 + 1)")));
+    }
+
+    @Test
+    @DisplayName("Brackets Around Subtraction")
+    public void BracketsAroundSubtraction() {
+        assertEquals(32, Integer.parseInt(Parser.parseLine("(128 - 64) / 2")));
+    }
+
 }
