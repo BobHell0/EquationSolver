@@ -123,7 +123,7 @@ public class Parser {
 
     }
     public static void main(String[] args) {
-        String expression = new String("3 + 4");
+        // String expression = new String("3 + 4");
         // String expression = new String("123 - 4 * 3");
         // String expression = new String("123 - 4 + 3");
         // String expression = new String("-4 * 3");
@@ -131,6 +131,15 @@ public class Parser {
         // String expression = new String("3 + (4 * 3)");
         // String expression = new String("3 + (4 - 3) / (5 / (4 - 3))");
         // String expression = new String("(123 + (-11/3)) * 2/(4-3) + 6");
+
+        // String expression = new String("5 - -3");
+        // String expression = new String("5 - (-3)");
+        // String expression = new String("5 + -3");
+        // String expression = new String("5 + (-3)");
+        String expression = new String("-5 * -3");
+
+
+
         
         
         Map<String, Expression> table = new HashMap<>();
