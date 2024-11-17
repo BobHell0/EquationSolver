@@ -143,9 +143,16 @@ public class Parser {
         // remove all white space – makes the regex-ing easier
         e.line = e.line.replaceAll("\s", "");
         
+        // Assumes there is at least one operaiton in the line, and tries to
+        // fill up the hash table with keys to map to relevant expressions
         String finalEncoding = parseExpressionComputation(e, table);
 
-        // String finalEncoding = "\\" + (table.size() - 1);
+        // This will only happen if there were no operations to break the input
+        // line down
+        if (!finalEncoding.matches("^\\\\[0-9]+")) {
+            return finalEncoding;
+        }
+
         return table.get(finalEncoding).simplify();
 
     }
@@ -157,7 +164,7 @@ public class Parser {
 
         e.line = e.line.replaceAll("\s", "");
         // e.line = e.line.replaceAll("-", "+-");
-        
+
         parseExpressionComputation(e, table);
         System.out.println();
         System.out.println(table.size());
