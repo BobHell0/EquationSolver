@@ -30,7 +30,7 @@ public class Parser {
         return left+op+right;
     }
 
-    public static String parseExpression(Parser e, Map<String, Expression> table) {
+    public static String parseExpressionComputation(Parser e, Map<String, Expression> table) {
         System.out.println(e.line);
 
         System.out.println(e.line);
@@ -57,7 +57,7 @@ public class Parser {
                     }
                     
                 }
-                String parsedBracket = parseExpression(new Parser(e.line.substring(i + 1, j)), table);
+                String parsedBracket = parseExpressionComputation(new Parser(e.line.substring(i + 1, j)), table);
                 e.line = e.line.substring(0, i) + parsedBracket + e.line.substring(j + 1);
             }
         }
@@ -119,10 +119,22 @@ public class Parser {
 
             m = p.matcher(e.line);
         }
+    }
 
+    public static String parseLine(String line) {
+
+        Map<String, Expression> table = new HashMap<>();
+        Parser e = new Parser(line);
+
+        // remove all white space – makes the regex-ing easier
+        e.line = e.line.replaceAll("\s", "");
+        
+        return parseExpressionComputation(e, table);
 
     }
     public static void main(String[] args) {
+        // TEST CASES:
+
         // String expression = new String("3 + 4");
         // String expression = new String("123 - 4 * 3");
         // String expression = new String("123 - 4 + 3");
@@ -148,7 +160,7 @@ public class Parser {
         e.line = e.line.replaceAll("\s", "");
         // e.line = e.line.replaceAll("-", "+-");
         
-        parseExpression(e, table);
+        parseExpressionComputation(e, table);
         System.out.println();
         System.out.println(table.size());
 
