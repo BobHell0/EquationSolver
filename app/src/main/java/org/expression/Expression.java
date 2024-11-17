@@ -1,4 +1,4 @@
-package app.src.main.java.org.expression;
+package org.expression;
 
 public interface Expression {
     public Expression evaluate();

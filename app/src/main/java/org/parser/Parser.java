@@ -1,10 +1,10 @@
-package app.src.main.java.org.parser;
+package org.parser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import app.src.main.java.org.expression.CompoundExpressionFactory;
-import app.src.main.java.org.expression.Expression;
-import app.src.main.java.org.expression.SimpleExpression;
+import org.expression.CompoundExpressionFactory;
+import org.expression.Expression;
+import org.expression.SimpleExpression;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,11 +1,10 @@
-package app.src.test.java.org.ParserTest;
+package org.parser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 
-import app.src.main.java.org.parser.Parser;
 
 public class BasicParsingTest {
     @Test

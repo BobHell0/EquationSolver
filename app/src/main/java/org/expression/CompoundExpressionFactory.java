@@ -1,9 +1,9 @@
-package app.src.main.java.org.expression;
+package org.expression;
 
-import app.src.main.java.org.expression.operation.Addition;
-import app.src.main.java.org.expression.operation.Division;
-import app.src.main.java.org.expression.operation.Multiplication;
-import app.src.main.java.org.expression.operation.Subtraction;
+import org.expression.operation.Addition;
+import org.expression.operation.Division;
+import org.expression.operation.Multiplication;
+import org.expression.operation.Subtraction;
 
 public class CompoundExpressionFactory {
     public static Expression expressionFromOperation(String operation, Expression exp1, Expression exp2) {
