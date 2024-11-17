@@ -29,11 +29,21 @@ public class AdvancedLiteraExpressionlParsingTest {
         assertEquals(64, Integer.parseInt(Parser.parseLine("3 + 4 * 2 * 5 + 4 + 2 * 7 + 3")));
     }
 
-    // failing test
     @Test
     @DisplayName("Subtraction and Multiplication") 
     public void SubtractionAndMultiplcation() {
         assertEquals(-20, Integer.parseInt(Parser.parseLine("-4 * -3 - 2 * 2 - 12 * 2 - 4")));
     }
-    
+
+    @Test
+    @DisplayName("No Operations - Simple Value Only")
+    public void SimpleValueOnly() {
+        assertEquals(4, Integer.parseInt(Parser.parseLine("4")));
+    }
+
+    @Test
+    @DisplayName("No Operations - Simple Negative Value Only")
+    public void SimpleNegativeValueOnly() {
+        assertEquals(-4, Integer.parseInt(Parser.parseLine("-4")));
+    }
 }

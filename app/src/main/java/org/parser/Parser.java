@@ -67,8 +67,19 @@ public class Parser {
 
         System.out.println("About to look for operations in " + e.line);
 
-        // if a negative sign is out the front, this needs to be handled as a single number
-        Matcher m = negativeOutFrontPattern.matcher(e.line);
+        findSingleExpressionOperation(negativeOutFrontPattern, e, table);
+
+        findOperations(divAndMultPattern, e, table);
+        findOperations(addAndSubPattern, e, table);
+
+        // findSingleExpressionOperation(negativeNumberPattern, e, table);
+
+        System.out.println(e.line);
+        return e.line;
+    }
+
+    private static void findSingleExpressionOperation(Pattern p, Parser e, Map<String, Expression> table) {
+        Matcher m = p.matcher(e.line);
         if (m.find()) {
 
             int matchLength = m.group(0).length();
@@ -88,28 +99,6 @@ public class Parser {
             table.put(expIdentifier, finalExpression);
             e.line = e.line.substring(0, start) + expIdentifier + e.line.substring(end);
         }
-
-        findOperations(divAndMultPattern, e, table);
-        findOperations(addAndSubPattern, e, table);
-
-        m = negativeNumberPattern.matcher(e.line);
-        if (m.find()) {
-            Expression expressionToRight;
-            if (m.group(1).startsWith("\\")) {
-                expressionToRight = table.get(m.group(1));
-            } else {
-                expressionToRight = new SimpleExpression(m.group(1));
-            }
-            Expression finalExpression = CompoundExpressionFactory.negativifyExpression(expressionToRight);
-
-            String expIdentifier = "\\" + table.size();
-
-            table.put(expIdentifier, finalExpression);
-            e.line = expIdentifier;
-        }
-
-        System.out.println(e.line);
-        return e.line;
     }
 
     private static void findOperations(Pattern p, Parser e, Map<String, Expression> table) {
