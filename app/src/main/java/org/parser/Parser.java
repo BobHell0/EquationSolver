@@ -34,9 +34,6 @@ public class Parser {
     public static String parseExpressionComputation(Parser e, Map<String, Expression> table) {
         System.out.println(e.line);
 
-        System.out.println(e.line);
-
-
         Pattern negativeOutFrontPattern = Pattern.compile("^-(\\\\[0-9]+|[A-Za-z]|[0-9]+(?:\\.[0-9]*)?)");
 
         // notice that the left number of the * or / will not be negative
@@ -44,7 +41,7 @@ public class Parser {
 
         Pattern addAndSubPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))([-\\+])((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))");
         
-        Pattern negativeNumberPattern = Pattern.compile("^-((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))");
+        // Pattern negativeNumberPattern = Pattern.compile("^-((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))");
         // recursively handling bracketed expressions
         for(int i = 0; i < e.line.length(); i++) {
             if (e.line.charAt(i) != '(') continue;
@@ -156,26 +153,4 @@ public class Parser {
         return table.get(finalEncoding).simplify();
 
     }
-    public static void main(String[] args) {
-        String expression = new String("-5 * -3");
-
-        Map<String, Expression> table = new HashMap<>();
-        Parser e = new Parser(expression);
-
-        e.line = e.line.replaceAll("\s", "");
-        // e.line = e.line.replaceAll("-", "+-");
-
-        parseExpressionComputation(e, table);
-        System.out.println();
-        System.out.println(table.size());
-
-        for (String key : table.keySet()) {
-            System.out.println(key);
-            System.out.println(table.get(key).getClass());
-            System.out.println(table.get(key).stringify());
-            System.out.println(table.get(key).evaluate().stringify());
-        }
-        
-    }
-
 }

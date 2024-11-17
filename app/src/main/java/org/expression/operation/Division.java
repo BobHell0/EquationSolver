@@ -15,8 +15,6 @@ public class Division implements Expression {
 
     @Override
     public Expression evaluate() {
-        System.out.println(left.simplify());
-        System.out.println(right.simplify());
         if (right.simplify().matches("0+(\\.0*)?")) {
             // TODO: throw divide-by-zero error
         }
