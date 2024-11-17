@@ -17,8 +17,14 @@ public class Division implements Expression {
     public Expression evaluate() {
         System.out.println(left.simplify());
         System.out.println(right.simplify());
+        if (right.simplify().matches("0+(\\.0*)?")) {
+            // TODO: throw divide-by-zero error
+        }
         if (left.simplify().matches("^-?[0-9]+(\\.[0-9]*)?$") && right.simplify().matches("^-?[0-9]+(\\.[0-9]*)?$")) {
             String val = Double.toString(Double.parseDouble(left.simplify()) / Double.parseDouble(right.simplify()));
+            if (val.matches("^[0-9]*\\.0$")) {
+                val = val.split("\\.")[0];
+            }
             return new SimpleExpression(val);
         } else {
             return this;
