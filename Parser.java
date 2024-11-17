@@ -35,12 +35,13 @@ public class Parser {
 
         System.out.println(e.line);
 
-        // crazy stuff – {3} would be an entry in the hash table that would 
-        Pattern divAndMultPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))([*/])((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))");
 
-        Pattern addAndSubPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))(\\+|\\+-)((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))");
+        // notice that the left number of the * or / will not be negative
+        Pattern divAndMultPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:[0-9]+(?:\\.[0-9]*)?))([*/])((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))");
+
+        Pattern addAndSubPattern = Pattern.compile("((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))([-\\+])((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))");
         
-
+        Pattern negativeNumberPattern = Pattern.compile("^-((?:\\\\[0-9]+)|(?:[A-Za-z])|(?:-?[0-9]+(?:\\.[0-9]*)?))");
         // recursively handling bracketed expressions
         for(int i = 0; i < e.line.length(); i++) {
             if (e.line.charAt(i) != '(') continue;
@@ -63,103 +64,158 @@ public class Parser {
 
         System.out.println("About to look for operations in " + e.line);
 
-        Matcher multAndDivs = divAndMultPattern.matcher(e.line);
+        // Matcher multAndDivs = divAndMultPattern.matcher(e.line);
 
-        // TODO: (1) make this while loop into a private method
-        while (multAndDivs.find()) {
+        // // TODO: (1) make this while loop into a private method
 
-            System.out.println(multAndDivs.group(0));
-            System.out.println(multAndDivs.group(1));
-            System.out.println(multAndDivs.group(2));
-            System.out.println(multAndDivs.group(3));
+        // while (multAndDivs.find()) {
 
-            int matchLength = multAndDivs.group(0).length();
-            int start = e.line.indexOf(multAndDivs.group(0));
-            int end = start + matchLength;
+        //     System.out.println(multAndDivs.group(0));
+        //     System.out.println(multAndDivs.group(1));
+        //     System.out.println(multAndDivs.group(2));
+        //     System.out.println(multAndDivs.group(3));
 
-            Expression leftExpression;
-            if (multAndDivs.group(1).startsWith("\\")) {
-                leftExpression = table.get(multAndDivs.group(1));
-            } else {
-                leftExpression = new SimpleExpression(multAndDivs.group(1));
-                // leftExpression = createExpression(multAndDivs.group(1));
-            }
+        //     int matchLength = multAndDivs.group(0).length();
+        //     int start = e.line.indexOf(multAndDivs.group(0));
+        //     int end = start + matchLength;
 
-            Expression rightExpression;
-            if (multAndDivs.group(3).startsWith("\\")) {
-                rightExpression = table.get(multAndDivs.group(3));
-            } else {
-                rightExpression = new SimpleExpression(multAndDivs.group(3));
-            }
-            Expression finalExpression = CompoundExpressionFactory.expressionFromOperation(multAndDivs.group(2), leftExpression, rightExpression);
+        //     Expression leftExpression;
+        //     if (multAndDivs.group(1).startsWith("\\")) {
+        //         leftExpression = table.get(multAndDivs.group(1));
+        //     } else {
+        //         leftExpression = new SimpleExpression(multAndDivs.group(1));
+        //         // leftExpression = createExpression(multAndDivs.group(1));
+        //     }
 
-            String expIdentifier = "\\" + table.size();
+        //     Expression rightExpression;
+        //     if (multAndDivs.group(3).startsWith("\\")) {
+        //         rightExpression = table.get(multAndDivs.group(3));
+        //     } else {
+        //         rightExpression = new SimpleExpression(multAndDivs.group(3));
+        //     }
+        //     Expression finalExpression = CompoundExpressionFactory.expressionFromOperation(multAndDivs.group(2), leftExpression, rightExpression);
 
-            table.put(expIdentifier, finalExpression);
-            e.line = e.line.substring(0, start) + expIdentifier + e.line.substring(end);
+        //     String expIdentifier = "\\" + table.size();
 
-            multAndDivs = divAndMultPattern.matcher(e.line);
-        }
+        //     table.put(expIdentifier, finalExpression);
+        //     e.line = e.line.substring(0, start) + expIdentifier + e.line.substring(end);
+
+        //     multAndDivs = divAndMultPattern.matcher(e.line);
+        // }
 
 
-        Matcher addsAndSubs = addAndSubPattern.matcher(e.line);
+        // Matcher addsAndSubs = addAndSubPattern.matcher(e.line);
 
         // TODO: make this while loop into a separate private method (See 1)
 
-        while (addsAndSubs.find()) {
-            System.out.println(addsAndSubs.group(0));
-            System.out.println(addsAndSubs.group(1));
-            System.out.println(addsAndSubs.group(2));
-            System.out.println(addsAndSubs.group(3));
+        // while (addsAndSubs.find()) {
+        //     System.out.println(addsAndSubs.group(0));
+        //     System.out.println(addsAndSubs.group(1));
+        //     System.out.println(addsAndSubs.group(2));
+        //     System.out.println(addsAndSubs.group(3));
 
-            int matchLength = addsAndSubs.group(0).length();
-            int start = e.line.indexOf(addsAndSubs.group(0));
-            int end = start + matchLength;
+        //     int matchLength = addsAndSubs.group(0).length();
+        //     int start = e.line.indexOf(addsAndSubs.group(0));
+        //     int end = start + matchLength;
 
-            Expression leftExpression;
-            if (addsAndSubs.group(1).startsWith("\\")) {
-                leftExpression = table.get(addsAndSubs.group(1));
+        //     Expression leftExpression;
+        //     if (addsAndSubs.group(1).startsWith("\\")) {
+        //         leftExpression = table.get(addsAndSubs.group(1));
+        //     } else {
+        //         leftExpression = new SimpleExpression(addsAndSubs.group(1));
+        //         // leftExpression = createExpression(multAndDivs.group(1));
+        //     }
+
+        //     Expression rightExpression;
+        //     if (addsAndSubs.group(3).startsWith("\\")) {
+        //         rightExpression = table.get(addsAndSubs.group(3));
+        //     } else {
+        //         rightExpression = new SimpleExpression(addsAndSubs.group(3));
+        //     }
+        //     Expression finalExpression = CompoundExpressionFactory.expressionFromOperation(addsAndSubs.group(2), leftExpression, rightExpression);
+
+        //     String expIdentifier = "\\" + table.size();
+
+        //     table.put(expIdentifier, finalExpression);
+        //     e.line = e.line.substring(0, start) + expIdentifier + e.line.substring(end);
+
+        //     multAndDivs = divAndMultPattern.matcher(e.line);
+        // }
+
+        findOperations(divAndMultPattern, e, table);
+        findOperations(addAndSubPattern, e, table);
+
+        Matcher m = negativeNumberPattern.matcher(e.line);
+        if (m.find()) {
+            Expression expressionToRight;
+            if (m.group(1).startsWith("\\")) {
+                expressionToRight = table.get(m.group(1));
             } else {
-                leftExpression = new SimpleExpression(addsAndSubs.group(1));
-                // leftExpression = createExpression(multAndDivs.group(1));
+                expressionToRight = new SimpleExpression(m.group(1));
             }
-
-            Expression rightExpression;
-            if (addsAndSubs.group(3).startsWith("\\")) {
-                rightExpression = table.get(addsAndSubs.group(3));
-            } else {
-                rightExpression = new SimpleExpression(addsAndSubs.group(3));
-            }
-            Expression finalExpression = CompoundExpressionFactory.expressionFromOperation(addsAndSubs.group(2), leftExpression, rightExpression);
+            Expression finalExpression = CompoundExpressionFactory.negativifyExpression(expressionToRight);
 
             String expIdentifier = "\\" + table.size();
 
             table.put(expIdentifier, finalExpression);
-            e.line = e.line.substring(0, start) + expIdentifier + e.line.substring(end);
-
-            multAndDivs = divAndMultPattern.matcher(e.line);
+            e.line = expIdentifier;
         }
 
         System.out.println(e.line);
         return e.line;
+    }
 
-        // Matcher addAndSubs = addAndSubPattern.matcher(line);
-        // if (addAndSubs.find()) {
-        //     System.out.println(addAndSubs.group(0));
-        //     System.out.println(addAndSubs.group(1));
-        //     System.out.println(addAndSubs.group(2));
-        //     System.out.println(addAndSubs.group(3));
-        // }
+    private static void findOperations(Pattern p, Parser e, Map<String, Expression> table) {
+        Matcher m = p.matcher(e.line);
+        
+        while (m.find()) {
+
+            int matchLength = m.group(0).length();
+            int start = e.line.indexOf(m.group(0));
+            int end = start + matchLength;
+
+            Expression leftExpression;
+            if (m.group(1).startsWith("\\")) {
+                leftExpression = table.get(m.group(1));
+            } else {
+                leftExpression = new SimpleExpression(m.group(1));
+                // leftExpression = createExpression(multAndDivs.group(1));
+            }
+
+            Expression rightExpression;
+            if (m.group(3).startsWith("\\")) {
+                rightExpression = table.get(m.group(3));
+            } else {
+                rightExpression = new SimpleExpression(m.group(3));
+            }
+            Expression finalExpression = CompoundExpressionFactory.expressionFromOperation(m.group(2).substring(0,1), leftExpression, rightExpression);
+
+            String expIdentifier = "\\" + table.size();
+
+            table.put(expIdentifier, finalExpression);
+            e.line = e.line.substring(0, start) + expIdentifier + e.line.substring(end);
+
+            m = p.matcher(e.line);
+        }
+
+
     }
     public static void main(String[] args) {
-        String expression = new String("190");
+        String expression = new String("3 + 4");
         // String expression = new String("123 - 4 * 3");
+        // String expression = new String("123 - 4 + 3");
+        // String expression = new String("-4 * 3");
+
+        // String expression = new String("3 + (4 * 3)");
+        // String expression = new String("3 + (4 - 3) / (5 / (4 - 3))");
+        // String expression = new String("(123 + (-11/3)) * 2/(4-3) + 6");
+        
         
         Map<String, Expression> table = new HashMap<>();
         Parser e = new Parser(expression);
 
         e.line = e.line.replaceAll("\s", "");
-        e.line = e.line.replaceAll("-", "+-");
+        // e.line = e.line.replaceAll("-", "+-");
         
         parseExpression(e, table);
         System.out.println();

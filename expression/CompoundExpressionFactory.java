@@ -21,4 +21,8 @@ public class CompoundExpressionFactory {
             throw new Error("Operation appears to be invalid");
         }
     }
+
+    public static Expression negativifyExpression(Expression exp) {
+        return new Subtraction(new SimpleExpression("0"), exp);
+    }
 }
